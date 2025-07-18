@@ -5,17 +5,20 @@ import { City } from '../model/city.model';
   providedIn: 'root',
 })
 export class CityStore {
-  private cities = signal<City[]>([]);
+  private _cities = signal<City[]>([]);
+
+  // Expose read-only signal
+  readonly cities = this._cities.asReadonly();
 
   addAll(cities: City[]) {
-    this.cities.set(cities);
+    this._cities.set(cities);
   }
 
   addOne(city: City) {
-    this.cities.set([...this.cities(), city]);
+    this._cities.set([...this._cities(), city]);
   }
 
   deleteOne(id: number) {
-    this.cities.set(this.cities().filter((s) => s.id !== id));
+    this._cities.set(this._cities().filter((s) => s.id !== id));
   }
 }
